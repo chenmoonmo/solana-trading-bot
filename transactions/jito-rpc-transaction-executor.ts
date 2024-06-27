@@ -45,7 +45,7 @@ export class JitoTransactionExecutor implements TransactionExecutor {
     payer: Keypair,
     latestBlockhash: BlockhashWithExpiryBlockHeight,
   ): Promise<{ confirmed: boolean; signature?: string; error?: string }> {
-    logger.debug('Starting Jito transaction execution...');
+    logger.debug(`Starting Jito transaction execution... ${+new Date()}`);
     this.JitoFeeWallet = this.getRandomValidatorKey(); // Update wallet key each execution
     logger.trace(`Selected Jito fee wallet: ${this.JitoFeeWallet.toBase58()}`);
 
@@ -100,7 +100,7 @@ export class JitoTransactionExecutor implements TransactionExecutor {
 
       if (successfulResults.length > 0) {
         logger.trace(`At least one successful response`);
-        logger.debug(`Confirming jito transaction...`);
+        logger.debug(`Confirming jito transaction... ${+new Date()}`);
         return await this.confirm(jitoTxsignature, latestBlockhash);
       } else {
         logger.debug(`No successful responses received for jito`);
