@@ -25,7 +25,7 @@ import { DefaultTransactionExecutor, TransactionExecutor } from './transactions'
 import { WarpTransactionExecutor } from './transactions/warp-transaction-executor';
 import { JitoTransactionExecutor } from './transactions/jito-rpc-transaction-executor';
 
-const snipeList = ['AUVtwSnuSb4DkUixSKKa92z9BXrkRK3B1DvVQFTqpump'];
+// const snipeList = ['AUVtwSnuSb4DkUixSKKa92z9BXrkRK3B1DvVQFTqpump'];
 
 (async function main() {
   const connection = new Connection(RPC_ENDPOINT, {
@@ -103,11 +103,22 @@ const snipeList = ['AUVtwSnuSb4DkUixSKKa92z9BXrkRK3B1DvVQFTqpump'];
 
       let baseMint = poolState.quoteMint.equals(new PublicKey(WSOL.mint)) ? poolState.baseMint : poolState.quoteMint;
 
-      if (!snipeList.includes(baseMint.toString())) {
-        console.log(baseMint.toString(), 'Not in snipe list');
+      // if (!snipeList.includes(baseMint.toString())) {
+      //   console.log(baseMint.toString(), 'Not in snipe list');
+      //   return;
+      // }
+
+      if (
+        !poolState.quoteMint.equals(new PublicKey(WSOL.mint)) &&
+        poolState.baseMint.equals(new PublicKey(WSOL.mint)) &&
+        baseMint.toBase58().endsWith('pump')
+      ) {
+        console.log(baseMint.toString(), 'is a pump token');
+      } else {
+        console.log(baseMint.toString(), 'is not a pump token');
         return;
       }
-
+      
       const ataOut = getAssociatedTokenAddressSync(baseMint, wallet.publicKey);
 
       const { innerTransaction } = Liquidity.makeSwapFixedInInstruction(
