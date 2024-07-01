@@ -25,7 +25,7 @@ import { DefaultTransactionExecutor, TransactionExecutor } from './transactions'
 import { WarpTransactionExecutor } from './transactions/warp-transaction-executor';
 import { JitoTransactionExecutor } from './transactions/jito-rpc-transaction-executor';
 
-const snipeList = [''];
+const snipeList = ['AUVtwSnuSb4DkUixSKKa92z9BXrkRK3B1DvVQFTqpump'];
 
 (async function main() {
   const connection = new Connection(RPC_ENDPOINT, {
@@ -79,11 +79,15 @@ const snipeList = [''];
       const keyIndex = [...(item.accounts as Buffer).values()];
 
       let pairAccount = await connection.getAccountInfo(new PublicKey(accounts[keyIndex[4]]));
-      if (pairAccount === null) throw Error('get account info error');
+      if (pairAccount === null) {
+        console.log('get account info error');
+        return;
+      }
 
       let poolState = LIQUIDITY_STATE_LAYOUT_V4.decode(pairAccount!.data);
 
       console.log({
+        signature: base58.encode(data.transaction.transaction.signature).toString(),
         baseMint: poolState.baseMint.toString(),
         quoteMint: poolState.quoteMint.toString(),
         time: +new Date(),
