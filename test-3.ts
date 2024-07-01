@@ -86,10 +86,13 @@ const snipeList = ['AUVtwSnuSb4DkUixSKKa92z9BXrkRK3B1DvVQFTqpump'];
 
       let poolState = LIQUIDITY_STATE_LAYOUT_V4.decode(pairAccount!.data);
 
+      const latestBlockhashv1 = await connection.getLatestBlockhash();
+
       console.log({
         signature: base58.encode(data.transaction.transaction.signature).toString(),
         baseMint: poolState.baseMint.toString(),
         quoteMint: poolState.quoteMint.toString(),
+        latestBlockhash: latestBlockhashv1,
         time: +new Date(),
       });
 
